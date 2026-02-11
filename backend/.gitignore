@@ -42,3 +42,5 @@ public/uploads/
 mongo-data/
 mongodb-data/
 dump/
+
+.S3git
