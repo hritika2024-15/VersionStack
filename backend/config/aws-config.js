@@ -1,12 +1,20 @@
-require("dotenv").config();
+require("dotenv").config(); 
+const { S3Client } = require("@aws-sdk/client-s3");
 
-const AWS = require("aws-sdk");
+const { AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET } = process.env;
 
-AWS.config.update({
-    region: process.env.AWS_REGION
+if (!AWS_REGION) throw new Error("AWS_REGION is not defined in environment variables.");
+if (!AWS_ACCESS_KEY_ID) throw new Error("AWS_ACCESS_KEY_ID is not defined in environment variables.");
+if (!AWS_SECRET_ACCESS_KEY) throw new Error("AWS_SECRET_ACCESS_KEY is not defined in environment variables.");
+if (!S3_BUCKET) throw new Error("S3_BUCKET is not defined in environment variables.");
+
+
+const s3 = new S3Client({
+  region: AWS_REGION,
+  credentials: {
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_SECRET_ACCESS_KEY,
+  },
 });
-
-const s3 = new AWS.S3();
-const S3_BUCKET = process.env.S3_BUCKET;
 
 module.exports = { s3, S3_BUCKET };
